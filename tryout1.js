@@ -1,4 +1,6 @@
 const http = require("http")
+const URL = require("url")
+const qs = require('querystring')
 
 function homePage(){
     return `<html>
@@ -26,16 +28,18 @@ function responseErrorHandler(err){
     }
 }
 const server = http.createServer((req, res) => {
-    if(req.method === 'GET' && req.url === '/home'){
+    const url = URL.parse(req.url)
+    if(req.method === 'GET' && url.pathname === '/home'){
         res.write(homePage(), responseErrorHandler)
     }
-    else if(req.method === 'GET' && req.url === '/product'){
+    else if(req.method === 'GET' && url.pathname === '/product'){
         res.write(productPage(), responseErrorHandler)
     }
     else{
         res.statusCode = 400
         res.statusMessage = "Bad request"
     }
+    console.log(qs.decode(url.query), "query string")
     res.end()
 })
 
