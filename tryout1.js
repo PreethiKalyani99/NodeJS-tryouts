@@ -35,6 +35,17 @@ const server = http.createServer((req, res) => {
     else if(req.method === 'GET' && url.pathname === '/product'){
         res.write(productPage(), responseErrorHandler)
     }
+    else if(req.method === 'POST' && url.pathname === '/register'){
+        res.statusCode = 200
+        let data = ''
+        req.on('data', (chunk) => {
+            data += chunk
+        })
+        req.on('end', () => {
+            console.log("Request data: " + data)
+        })
+        res.write("Registration successfull", responseErrorHandler)
+    }
     else{
         res.statusCode = 400
         res.statusMessage = "Bad request"
